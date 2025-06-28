@@ -6,6 +6,7 @@ import { useFavorites } from "@/store/useFavorites";
 import { Heart, Search } from "lucide-react";
 import Header from "@/components/header";
 import SearchInput from "@/components/search";
+import Bar from "@/components/bar";
 
 type Character = {
   id: number;
@@ -21,6 +22,7 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [sortAZ, setSortAZ] = useState(true);
   const { favorites, toggleFavorite } = useFavorites();
+  const [onlyFavorites, setOnlyFavorites] = useState(false);
 
   useEffect(() => {
     api
@@ -32,9 +34,17 @@ export default function Home() {
         },
       })
       .then((res) => {
-        setCharacters(res.data.data.results);
+        let results = res.data.data.results;
+
+        if (onlyFavorites) {
+          results = results.filter((char: Character) =>
+            favorites.some((fav) => fav.id === char.id)
+          );
+        }
+
+        setCharacters(results);
       });
-  }, [search, sortAZ]);
+  }, [search, sortAZ, onlyFavorites, favorites]);
 
   return (
     <>
@@ -45,6 +55,14 @@ export default function Home() {
           sortAZ={sortAZ}
           setSortAZ={setSortAZ}
         />
+        <Bar
+          sortAZ={sortAZ}
+          setSortAZ={setSortAZ}
+          heroCount={characters.length}
+          onlyFavorites={onlyFavorites}
+          setOnlyFavorites={setOnlyFavorites}
+        />
+
         <div className="grid lg:grid-cols-4 sm:grid-cols-1 md:grid-cols-4 gap-6">
           {characters.map((char) => {
             const isFav = favorites.some((f) => f.id === char.id);
@@ -73,18 +91,7 @@ export default function Home() {
           })}
         </div>
 
-        <div className="mt-10">
-          <h3 className="font-bold text-xl mb-2">
-            ⭐ Favoritos ({favorites.length}/5)
-          </h3>
-          <div className="flex flex-wrap gap-4">
-            {favorites.map((fav) => (
-              <div key={fav.id} className="text-sm border p-2 rounded">
-                {fav.name}
-              </div>
-            ))}
-          </div>
-        </div>
+        
       </main>
     </>
   );
