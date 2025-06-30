@@ -1,9 +1,20 @@
-"use client";
-
 import { notFound } from "next/navigation";
 import md5 from "md5";
+import { Metadata } from "next";
 
-export default async function CharacterPage({ params }: { params: { id: string } }) {
+type Params = {
+  params: {
+    id: string;
+  };
+};
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  return {
+    title: `Personagem #${params.id}`,
+  };
+}
+
+export default async function CharacterPage({ params }: Params) {
   const ts = Date.now().toString();
   const publicKey = process.env.NEXT_PUBLIC_MARVEL_PUBLIC_KEY!;
   const privateKey = process.env.MARVEL_PRIVATE_KEY!;
