@@ -34,3 +34,13 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+
+---
+
+### 📌Como você lidaria com o limite de 5 favoritos se estivesse usando Redux ou Zustand?
+
+Se eu estivesse usando Redux ou Zustand para gerenciar os favoritos, criaria um slice (Redux) ou store (Zustand) com um array de favoritos e funções. Para manter o limite de 5 favoritos, a lógica seria centralizada na função de adicionar: antes de inserir um novo personagem, a função verificaria o comprimento atual da lista e impediria a adição se já houvesse 5 itens. Também Pouparia requisições desnecessárias.
+
+Com Zustand, o controle fica ainda mais simples e direto, já que o estado é acessível de qualquer componente e as funções podem conter validações inline. Dessa forma, a lógica de restrição de favoritos não fica espalhada, e o estado se mantém previsível e escalável, mesmo se fosse necessário persistir em localStorage ou backend futuramente.
