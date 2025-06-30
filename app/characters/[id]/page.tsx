@@ -2,19 +2,19 @@ import { notFound } from "next/navigation";
 import md5 from "md5";
 import { Metadata } from "next";
 
-type Params = {
+type PageProps = {
   params: {
     id: string;
   };
 };
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   return {
     title: `Personagem #${params.id}`,
   };
 }
 
-export default async function CharacterPage({ params }: Params) {
+export default async function CharacterPage({ params }: PageProps) {
   const ts = Date.now().toString();
   const publicKey = process.env.NEXT_PUBLIC_MARVEL_PUBLIC_KEY!;
   const privateKey = process.env.MARVEL_PRIVATE_KEY!;
